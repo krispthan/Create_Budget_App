@@ -21,6 +21,7 @@ body {
     position: relative;
     height: 100vh;
     font-weight: 400;
+    background-color: cadetblue;
 }
 
 .right { float: right; }
@@ -199,8 +200,8 @@ h2 {
     margin-bottom: 15px;
 }
 
-.icome__title { color: #28B9B5; }
-.expenses__title { color: #FF5049; }
+.icome__title { color: #122d2c; }
+.expenses__title { color:#7b0a06; }
 
 .item {
     padding: 13px;
@@ -233,13 +234,13 @@ h2 {
 
 .income .item__value,
 .income .item__delete--btn {
-    color: #28B9B5;
+    color:#3d6160;
 }
 
 .expenses .item__value,
 .expenses .item__percentage,
 .expenses .item__delete--btn {
-    color: #FF5049;
+    color:#612725;
 }
 
 
