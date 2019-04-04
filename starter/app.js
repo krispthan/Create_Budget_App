@@ -95,7 +95,12 @@ var UIController = (function(){
     inputValue:".add__value",
     inputBtn: "add__btn",
     incomeContainer: '.income__list',
-    expensesContainer: '.expenses__list'
+    expensesContainer: '.expenses__list',
+    budgetLabel :'.budget__value',
+    incomeLabel: '.budget__income--value',
+    expensesLabel: 'expense__income--value',
+    percentageLabel: '.budget__expenses--percentage',
+    container: '.container'
   }
     return{
       getInput: function(){
@@ -110,11 +115,11 @@ var UIController = (function(){
         //create HTML string with placeholder text
         if(type === 'inc'){
           element = DOMstrings.incomeContainer;
-          html= `<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">%value%</div>
+          html= `<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div> <div class="right clearfix"> <div class="item__value">%value%</div>
           <div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div> </div></div>`;
         } else if (type === 'exp'){ 
           element = DOMstrings.expensesContainer;
-          html= `<div class="item clearfix" id="income%id%"><div class="item__description">%description%</div> <div class="right clearfix">
+          html= `<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div> <div class="right clearfix">
           <div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
           </div> </div> </div>`;
         }
@@ -137,6 +142,18 @@ var UIController = (function(){
        });
         fieldsArr[0].focus();
       },
+      displayBudget: function(obj){
+        document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
+        document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
+        document.querySelector(DOMstrings.expensesLabel).textContent = obj.totalExp;
+        
+
+        if(obj.percentage >= 0){
+          document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
+        } else {
+          document.querySelector(DOMstrings.percentageLabel).textContent = '---';
+        }
+      },
       getDOMstrings: function(){
         return DOMstrings;
       }
@@ -157,8 +174,10 @@ var controller = (function(budgetCtrl, UICtrl) {
          ctrlAddItem();
        }
     });
+    document.querySelector(DOM.container).addEventListener("click", ctrlDeleteItem);
   };
 
+  
   var updateBudget = function (){
   //1)Calculate the Budget 
     budgetCtrl.calculateBudget();
@@ -167,7 +186,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     var budget = budgetCtrl.getBudget();
 
   //3)Display the Budget on the UI
-    console.log(budget);
+    UICtrl.displayBudget(budget);
   };
  
   var ctrlAddItem = function() {
@@ -189,13 +208,31 @@ var controller = (function(budgetCtrl, UICtrl) {
           //5)calculate and update budget
           updatedBudget();
   }
+};
+  var ctrlDeleteItem = function(event){
+    var itemID, splitID, type, ID;
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+   
+    if(itemID){
+      splitIT = itemID.split('-');
+      type= splitID[0];
+      ID = splitID[1];
+    }
+   }
 
   return {
     init: function(){
-      console.log("application ahs startred");
+      UICtrl.displayBudget(
+        {
+          budget: 0,
+          totalInc: 0,
+          totalExp: 0,
+          percentage: 0
+        }
+      );
       setupEventListeners();
     }
-  };
+  }
 })(budgetController, UIController);
 
 controller.init();
