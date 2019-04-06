@@ -21,7 +21,7 @@ body {
     position: relative;
     height: 100vh;
     font-weight: 400;
-    background-color: cadetblue;
+    background-color: #c6d4d4;
 }
 
 .right { float: right; }
